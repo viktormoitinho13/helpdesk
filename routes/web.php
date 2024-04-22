@@ -2,7 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Livewire\CreatePost;
+use Livewire\Livewire;
 
 
 
-Route::get('/', CreatePost::class);
+
+Route::get('posts/create', CreatePost::class);

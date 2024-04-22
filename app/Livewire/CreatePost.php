@@ -2,14 +2,9 @@
 
 namespace App\Livewire;
 
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\MarkdownEditor;
+
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Textarea;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
-use Illuminate\Contracts\View\View;
-use Livewire\Component;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Builder;
@@ -19,6 +14,13 @@ use App\Filament\Components\Forms\Status;
 use App\Filament\Components\User\Forms;
 use Illuminate\Mail\Markdown;
 use App\Models\chamadosAbertos;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Form;
+use Illuminate\Contracts\View\View;
+use Livewire\Component;
 
 class CreatePost extends Component implements HasForms
 {
@@ -31,7 +33,6 @@ class CreatePost extends Component implements HasForms
         $this->form->fill();
     }
 
-
     public function form(Form $form): Form
     {
         return $form
@@ -42,16 +43,16 @@ class CreatePost extends Component implements HasForms
                         Grid::make()->columns(12)
                             ->schema([
                                 Select::make(name: 'assuntos')
-                                ->options([
-                                    'T.I.' => [
-                                        'pc_nao_liga' => 'Computador não liga',
-                                        'reviewing' => 'Reviewing',
-                                    ],
-                                    'Reviewed' => [
-                                        'published' => 'Published',
-                                        'rejected' => 'Rejected',
-                                    ],
-                                ])
+                                    ->options([
+                                        'T.I.' => [
+                                            'pc_nao_liga' => 'Computador não liga',
+                                            'reviewing' => 'Reviewing',
+                                        ],
+                                        'Reviewed' => [
+                                            'published' => 'Published',
+                                            'rejected' => 'Rejected',
+                                        ],
+                                    ])
                                     ->columnSpan([
                                         'sm' => 6,
                                         'xl' => 6,
@@ -71,26 +72,17 @@ class CreatePost extends Component implements HasForms
                         Textarea::make(name: 'comentario')
                             ->label('Comentário')
                             ->rows(10)
-                            ->cols(20)
-
+                            ->cols(20),
                     ]),
-
-            ]);
+            ])->statePath('data');;
     }
 
 
     public function create(): void
     {
-       $data = $this->form->getState();
+        $data = $this->form->getState();
 
-       chamadosAbertos::create([
-            'ASSUNTO' => $data['assuntos'],
-            'SOLICITANTE' => $data['solicitante']
-
-
-       ]);
-
-       
+        dd($data);
     }
 
     public function render()
