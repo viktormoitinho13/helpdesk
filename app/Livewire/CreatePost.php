@@ -21,6 +21,7 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class CreatePost extends Component implements HasForms
 {
@@ -37,44 +38,48 @@ class CreatePost extends Component implements HasForms
     {
         return $form
             ->schema([
-                Section::make('Abertura de chamados')
-                    ->description('Preencha os campos abaixo para relator o seu problema.')
-                    ->schema([
-                        Grid::make()->columns(12)
-                            ->schema([
-                                Select::make(name: 'assuntos')
-                                    ->options([
-                                        'T.I.' => [
-                                            'pc_nao_liga' => 'Computador não liga',
-                                            'reviewing' => 'Reviewing',
-                                        ],
-                                        'Reviewed' => [
-                                            'published' => 'Published',
-                                            'rejected' => 'Rejected',
-                                        ],
-                                    ])
-                                    ->columnSpan([
-                                        'sm' => 6,
-                                        'xl' => 6,
-                                        '2xl' => 6,
-                                    ]), TextInput::make(name: 'solicitante')
-                                    ->columnSpan([
-                                        'sm' => 6,
-                                        'xl' => 6,
-                                        '2xl' => 6,
-                                    ]),
-                            ]),
-                        FileUpload::make(name: 'anexo')
-                            ->label('Anexos')
-                            ->multiple()
-                            ->minFiles(1)
-                            ->maxFiles(5),
-                        Textarea::make(name: 'comentario')
-                            ->label('Comentário')
-                            ->rows(10)
-                            ->cols(20),
-                    ]),
-            ])->statePath('data');;
+                Grid::make([
+                    'default' => 1,
+                    'sm' => 2,
+                    'md' => 3,
+                    'lg' => 4,
+                    'xl' => 6,
+                    '2xl' => 8,
+                ])->schema([
+                    Select::make(name: 'assuntos')
+                    ->options([
+                        'T.I.' => [
+                            'pc_nao_liga' => 'Computador não liga',
+                            'reviewing' => 'Reviewing',
+                        ],
+                        'Reviewed' => [
+                            'published' => 'Published',
+                            'rejected' => 'Rejected',
+                        ],
+                    ])->columnSpan([
+                        'sm' => 2,
+                        'xl' => 3,
+                        '2xl' => 4,
+                    ]), 
+                    TextInput::make(name: 'solicitante')->columnSpan([
+                        'sm' => 2,
+                        'xl' => 3,
+                        '2xl' => 4,
+                    ]), 
+
+                ]),
+
+                    FileUpload::make(name:'anexos')->multiple() ->previewable(false)->maxFiles(5),
+                    Textarea::make(name:'comentario')   
+                    
+                    ->rows(10)
+                    ->cols(10)
+                    ->minLength(10)
+                    ->maxLength(2000),
+                  
+                  
+                   
+                  ])->statePath('data');
     }
 
 
